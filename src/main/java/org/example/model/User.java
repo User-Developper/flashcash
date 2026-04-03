@@ -12,6 +12,20 @@ import java.util.List;
 @Entity
 public class User {
 
+    public User(String firstName, String lastName, String email, String password) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+
+
+    }
+
+    public User(UserAccount account) {
+        this.account = account;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,6 +38,5 @@ public class User {
     private List<Link> links;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private UserAccount account;
-
 
 }
