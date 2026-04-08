@@ -1,0 +1,128 @@
+/* Reset minimal */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body */
+body {
+    background: linear-gradient(120deg, #e0f7fa, #ffffff);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background-color: #00796b;
+    color: white;
+    padding: 25px 0;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin-bottom: 10px;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+header nav a {
+    color: white;
+    margin: 0 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+    color: #b2dfdb;
+}
+
+/* Main content */
+main {
+    max-width: 450px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Form styles */
+form div {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #00796b;
+}
+
+form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: 0.3s;
+}
+
+form input:focus {
+    border-color: #00796b;
+    box-shadow: 0 0 8px rgba(0,121,107,0.3);
+}
+
+/* Icons inside input */
+form input[type="email"]::placeholder,
+form input[type="password"]::placeholder,
+form input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+/* Buttons */
+form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00796b;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background-color: #004d40;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin: 40px 0 10px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Headings */
+h2 {
+    margin-bottom: 18px;
+    color: #00796b;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    main {
+        margin: 20px;
+        padding: 20px;
+    }
+}

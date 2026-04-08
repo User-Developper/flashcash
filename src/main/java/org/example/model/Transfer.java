@@ -14,12 +14,14 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private LocalDateTime date;
-    @ManyToMany
-    private User from;
-    @ManyToMany
-    private User to;
+    @ManyToOne
+    private User fromUser;
+    @ManyToOne
+    private User toUser;
     private Double amountBeforeFee;
     private Double amountAfterFee;
 
+
+    public Transfer() {}
 
 }

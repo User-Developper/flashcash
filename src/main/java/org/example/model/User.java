@@ -4,7 +4,6 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -22,9 +21,9 @@ public class User {
 
     }
 
-    public User(UserAccount account) {
-        this.account = account;
-    }
+    public User() {}
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +33,9 @@ public class User {
     @Column(unique = true)
     private  String email;
     private String password;
-    @ManyToMany
+    @OneToMany(mappedBy = "user1")
     private List<Link> links;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private UserAccount account;
 
 }

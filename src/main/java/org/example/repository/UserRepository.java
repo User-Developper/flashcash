@@ -2,15 +2,18 @@ package org.example.repository;
 
 import org.example.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Long>, CrudRepository<User, Long> {
 
-
-
+    @Query(value = "SELECT u FROM User u LEFT JOIN FETCH u.links WHERE u.email=:email ")
+    public Optional<User> findByEmail(String email);
 
 }
+
+

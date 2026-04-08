@@ -1,10 +1,7 @@
 package org.example.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,12 +9,14 @@ import lombok.Data;
 public class Link {
 
 
-    @id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @ManyToMany
+    @ManyToOne
     User user1;
-    @ManyToMany
+    @ManyToOne
     User user2;
+
+    public Link() {}
 
 }

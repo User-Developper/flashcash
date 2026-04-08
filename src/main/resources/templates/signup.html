@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription - FlashCash</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Inscription</h1>
+    <nav>
+        <a th:href="@{/}">Accueil</a> |
+        <a th:href="@{/login}">Connexion</a>
+    </nav>
+</header>
+
+<main>
+    <form th:action="@{/signup}" th:object="${signUpForm}" method="post">
+        <div>
+            <label for="firstName">Prénom :</label>
+            <input type="text" th:field="*{firstName}" id="firstName" name="firstName" required>
+        </div>
+        <div>
+            <label for="lastName">Nom :</label>
+            <input type="text" th:field="*{lastName}" id="lastName" name="lastName" required>
+        </div>
+        <div>
+            <label for="email">Email :</label>
+            <input type="email" th:field="*{email}"id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Mot de passe :</label>
+            <input type="password" th:field="*{password}"id="password" name="password" required>
+        </div>
+        <button type="submit">S’inscrire</button>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 FlashCash</p>
+</footer>
+</body>
+</html>
