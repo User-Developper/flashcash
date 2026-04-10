@@ -6,7 +6,9 @@ import org.example.service.LinkService;
 import org.example.service.SessionService;
 import org.example.service.TransferService;
 import org.example.service.UserService;
+import org.example.service.form.AddToFlashCashForm;
 import org.example.service.form.SignupForm;
+import org.example.service.form.TransferForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +37,15 @@ public class UserController {
     }
 
 
-//    @GetMapping("/")
-//    public ModelAndView home(Model model) {
-//
-//        User user = sessionService.sessionUser();
-//        model.addAttribute("user", user);
-//        List<Transfer> transactions = transferService.findTransactions();
-//        model.addAttribute("transfers", transactions);
-//        return new ModelAndView("index");
-//    }
+    @GetMapping("/")
+    public ModelAndView home(Model model) {
+
+        User user = sessionService.sessionUser();
+        model.addAttribute("user", user);
+        List<Transfer> transactions = transferService.findTransactions();
+        model.addAttribute("transfers", transactions);
+        return new ModelAndView("home");
+    }
 
     @GetMapping("/signup")
     public ModelAndView signup(Model model) {
@@ -59,13 +61,56 @@ public class UserController {
         return new ModelAndView("signin");
     }
 
-    @GetMapping("/")
-    public ModelAndView home(Model model){
+//    @GetMapping("/")
+//    public ModelAndView home(Model model){
+//
+//        return new ModelAndView("home");
+//
+//    }
 
-        return new ModelAndView("home");
+    @GetMapping("/transfer")
+    public ModelAndView transferMoney(Model model){
+
+        User user = sessionService.sessionUser();
+        model.addAttribute("user",user);
+
+        TransferForm transferForm = new TransferForm();
+        model.addAttribute("transferForm", transferForm);
+
+        return new ModelAndView("transfer");
 
     }
 
+    @GetMapping("/logout")
+    public ModelAndView deconnect(Model model){
+
+        User user = sessionService.sessionUser();
+
+
+
+        return new ModelAndView("home");
+    }
+
+    @GetMapping("add-to-flashcahs")
+    public ModelAndView addToFlashCash(Model model){
+
+        AddToFlashCashForm addToFlashCashForm = new AddToFlashCashForm();
+        model.addAttribute("addToFlashCash", addToFlashCashForm);
+
+        return new ModelAndView("addToFlashCash");
+
+    }
+
+
+    @PostMapping("add-to-flashcash")
+    public  ModelAndView transferCashToAccount(Model model, @ModelAttribute("addToFlashForm") AddToFlashCashForm form){
+
+        transferService.transferToAccount(form);
+        User user = sessionService.sessionUser();
+        model.addAttribute("user", user);
+        return new ModelAndView("transfer");
+
+    }
 
 
 }

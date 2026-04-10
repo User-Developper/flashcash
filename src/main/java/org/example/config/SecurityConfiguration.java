@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests ) -> requests
 
-                                .requestMatchers("/index.css", "/images/**", "/signin", "/signup")
+                                .requestMatchers("/index.css", "/images/**", "/signin", "/signup", "/","/css/**")
                                 .permitAll()
                                 .anyRequest().authenticated()
 
@@ -38,11 +38,26 @@ public class SecurityConfiguration {
                         .loginPage("/signin")
                         .permitAll().usernameParameter("email").defaultSuccessUrl("/", true)
 
-                )
+                );
 
-                .logout(( logout ) ->
+//                http.logout(( logout ) ->
+//
+//                        logout.permitAll());
 
-                        logout.permitAll());
+//        http.logout()
+//                .logoutUrl("/logout")        // URL déclenchant la déconnexion
+//                .logoutSuccessUrl("/signin") // page après déconnexion
+//                .invalidateHttpSession(true) // détruit la session
+//                .deleteCookies("JSESSIONID"); // supprime le cookie
+
+        http.logout(logout ->
+                logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/signin")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+        );
 
         return http.build();
 

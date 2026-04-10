@@ -9,14 +9,61 @@
 <header>
     <h1>Bienvenue sur FlashCash</h1>
     <nav>
-        <a th:href="@{/signin}">Connexion</a> |
-        <a th:href="@{/signup}">Inscription</a>
+        <div th:if="${user == null}">
+            <a th:href="@{/signin}">Connexion</a> |
+            <a th:href="@{/signup}">Inscription</a>
+        </div>
+
+        <div th:if="${user != null}">
+            <span th:text="${user.email}"></span> |
+            <a th:href="@{/logout}">Déconnexion</a>
+        </div>
     </nav>
 </header>
 
 <main>
-    <h2>Vos transactions et comptes en un clic !</h2>
-    <p>Connectez-vous ou inscrivez-vous pour gérer vos transferts et comptes utilisateurs.</p>
+
+    <h2 class="profile-title">Mon profil</h2>
+
+    <div th:if="${user != null}" class="profile-container">
+
+
+        <table class="profile-table">
+            <tr>
+                <th class="profile-th">Email</th>
+                <td class="profile-td" th:text="${user.email}"></td>
+            </tr>
+            <tr>
+                <th class="profile-th">Montant</th>
+                <td class="profile-td" th:text="${user.account != null ? user.account.amount : 0}"></td>
+            </tr>
+        </table>
+
+        <div class="transfer-entry">
+            <a th:href="@{/transfer}" class="transfer-button">Effectuer un transfert</a>
+        </div>
+
+    </div>
+
+    <div th:if="${user != null}" class="contacts-container">
+
+        <h2>Mes contacts</h2>
+
+        <table class="contacts-table">
+            <tr>
+                <th>Email</th>
+            </tr>
+
+            <tr th:each="contact : ${contacts}">
+                <td th:text="${contact.email}"></td>
+            </tr>
+
+        </table>
+
+    </div>
+        <h2>Vos transactions et comptes en un clic !</h2>
+
+    <p th:if="${user == null}">Connectez-vous ou inscrivez-vous pour gérer vos transferts et comptes utilisateurs.</p>
 </main>
 
 <footer>
