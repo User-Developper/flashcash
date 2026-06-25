@@ -1,19 +1,22 @@
 package org.example.controller;
 
-import org.example.model.Transfer;
 import org.example.model.User;
-import org.example.service.LinkService;
+import org.example.repository.ReportRepository;
+import org.example.repository.SignalRepository;
+import org.example.repository.SignalRepository;
+import org.example.service.DataInitializer;
 import org.example.service.SessionService;
-import org.example.service.TransferService;
+import org.example.service.SignalService;
 import org.example.service.UserService;
-import org.example.service.form.AddToFlashCashForm;
+import org.example.service.form.ReportForm;
 import org.example.service.form.SignupForm;
-import org.example.service.form.TransferForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -21,31 +24,73 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private final LinkService linkService;
     private final UserService userService;
-    private final TransferService transferService;
     private final SessionService sessionService;
+    private final SignalService signalService;
+    private final ReportRepository reportRepository;
 
-    public UserController(LinkService linkService, UserService userService, TransferService transferService, SessionService sessionService) {
 
+    @GetMapping("/debug")
+    @ResponseBody
+    public String debug() {
+        return "reports=" + reportRepository.count();
+    }
 
+    public UserController(SignalService signalService, UserService userService, SessionService sessionService, ReportRepository reportRepository) {
+
+        this.signalService = signalService;
         this.sessionService = sessionService;
-        this.linkService = linkService;
         this.userService = userService;
-        this.transferService = transferService;
+
+        this.reportRepository = reportRepository;
 
     }
 
+    @Autowired
+    SignalRepository signalRepository;
 
-    @GetMapping("/")
-    public ModelAndView home(Model model) {
 
-        User user = sessionService.sessionUser();
-        model.addAttribute("user", user);
-        List<Transfer> transactions = transferService.findTransactions();
-        model.addAttribute("transfers", transactions);
-        return new ModelAndView("home");
+//    @GetMapping("/")
+//    public ModelAndView home(Model model) {
+//
+//        User user = sessionService.sessionUser();
+//        model.addAttribute("user", user);
+//
+//
+////        List<Integer> data = List.of(5, 10, 15, 8, 20, 12);
+////
+////        model.addAttribute("chartData", data);
+//
+//        model.addAttribute("chartData", signalService.getDataByMonth());
+//
+//        return new ModelAndView("home");
+//    }
+
+@GetMapping("/")
+public ModelAndView home(Model model) {
+
+//    User user = sessionService.sessionUser();
+//    model.addAttribute("user", user);
+
+    User user = sessionService.sessionUser();
+
+    if (user == null) {
+        user = new User();
     }
+
+    model.addAttribute("user", user);
+
+    model.addAttribute("chartData", signalService.getDataByMonth(2025));
+    model.addAttribute("chartDay", signalService.getDataByDay(2025));
+    model.addAttribute("chartYearData", signalService.getReportsByYear(2025));
+    model.addAttribute("reports", signalService.getReportsPaca());
+
+    System.out.println("MONTH DATA = " + signalService.getDataByMonth(2025));
+    System.out.println("DAY DATA = " + signalService.getDataByDay(2025));
+    System.out.println("YEAR DATA = " + signalService.getReportsByYear(2025));
+
+    return new ModelAndView("home");
+}
 
     @GetMapping("/signup")
     public ModelAndView signup(Model model) {
@@ -61,6 +106,14 @@ public class UserController {
         return new ModelAndView("signin");
     }
 
+//    @PostMapping("/report")
+//    public ModelAndView createReport(@ModelAttribute("reportForm")ReportForm reportForm) {
+//
+//        signalService.createReport(reportForm);
+//        return new ModelAndView("report");
+//
+//    }
+
 //    @GetMapping("/")
 //    public ModelAndView home(Model model){
 //
@@ -68,18 +121,18 @@ public class UserController {
 //
 //    }
 
-    @GetMapping("/transfer")
-    public ModelAndView transferMoney(Model model){
-
-        User user = sessionService.sessionUser();
-        model.addAttribute("user",user);
-
-        TransferForm transferForm = new TransferForm();
-        model.addAttribute("transferForm", transferForm);
-
-        return new ModelAndView("transfer");
-
-    }
+//    @GetMapping("/transfer")
+//    public ModelAndView transferMoney(Model model){
+//
+//        User user = sessionService.sessionUser();
+//        model.addAttribute("user",user);
+//
+//        TransferForm transferForm = new TransferForm();
+//        model.addAttribute("transferForm", transferForm);
+//
+//        return new ModelAndView("transfer");
+//
+//    }
 
     @GetMapping("/logout")
     public ModelAndView deconnect(Model model){
@@ -91,26 +144,26 @@ public class UserController {
         return new ModelAndView("home");
     }
 
-    @GetMapping("add-to-flashcahs")
-    public ModelAndView addToFlashCash(Model model){
+//    @GetMapping("add-to-flashcahs")
+//    public ModelAndView addToFlashCash(Model model){
+//
+//        AddToFlashCashForm addToFlashCashForm = new AddToFlashCashForm();
+//        model.addAttribute("addToFlashCash", addToFlashCashForm);
+//
+//        return new ModelAndView("addToFlashCash");
+//
+//    }
 
-        AddToFlashCashForm addToFlashCashForm = new AddToFlashCashForm();
-        model.addAttribute("addToFlashCash", addToFlashCashForm);
 
-        return new ModelAndView("addToFlashCash");
-
-    }
-
-
-    @PostMapping("add-to-flashcash")
-    public  ModelAndView transferCashToAccount(Model model, @ModelAttribute("addToFlashForm") AddToFlashCashForm form){
-
-        transferService.transferToAccount(form);
-        User user = sessionService.sessionUser();
-        model.addAttribute("user", user);
-        return new ModelAndView("transfer");
-
-    }
+//    @PostMapping("add-to-flashcash")
+//    public  ModelAndView transferCashToAccount(Model model, @ModelAttribute("addToFlashForm") AddToFlashCashForm form){
+//
+//        transferService.transferToAccount(form);
+//        User user = sessionService.sessionUser();
+//        model.addAttribute("user", user);
+//        return new ModelAndView("transfer");
+//
+//    }
 
 
 }

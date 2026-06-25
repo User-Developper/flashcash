@@ -1,73 +1,232 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <title>FlashCash - Home</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
-<header>
-    <h1>Bienvenue sur FlashCash</h1>
-    <nav>
-        <div th:if="${user == null}">
-            <a th:href="@{/signin}">Connexion</a> |
-            <a th:href="@{/signup}">Inscription</a>
-        </div>
+    <title>Dashboard Signalements</title>
 
-        <div th:if="${user != null}">
-            <span th:text="${user.email}"></span> |
-            <a th:href="@{/logout}">Déconnexion</a>
-        </div>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>Dashboard Signalements</h1>
+
+    <nav>
+        <a th:href="@{/signin}">Connexion</a>
+        <a th:href="@{/signup}">Inscription</a>
+        <a th:href="@{/logout}">Déconnexion</a>
+        <a th:href="@{/report}">Signaler</a>
     </nav>
 </header>
 
 <main>
 
-    <h2 class="profile-title">Mon profil</h2>
+    <h2>Statistiques environnementales</h2>
 
-    <div th:if="${user != null}" class="profile-container">
+    <div sec:authorize="isAuthenticated()">
 
+        <div class="chart-container">
+            <canvas id="chartMonth"></canvas>
+        </div>
 
-        <table class="profile-table">
-            <tr>
-                <th class="profile-th">Email</th>
-                <td class="profile-td" th:text="${user.email}"></td>
-            </tr>
-            <tr>
-                <th class="profile-th">Montant</th>
-                <td class="profile-td" th:text="${user.account != null ? user.account.amount : 0}"></td>
-            </tr>
-        </table>
+        <div class="chart-container">
+            <canvas id="chartDay"></canvas>
+        </div>
 
-        <div class="transfer-entry">
-            <a th:href="@{/transfer}" class="transfer-button">Effectuer un transfert</a>
+        <div class="chart-container">
+            <canvas id="chartYear"></canvas>
         </div>
 
     </div>
 
-    <div th:if="${user != null}" class="contacts-container">
 
-        <h2>Mes contacts</h2>
 
-        <table class="contacts-table">
-            <tr>
-                <th>Email</th>
-            </tr>
 
-            <tr th:each="contact : ${contacts}">
-                <td th:text="${contact.email}"></td>
-            </tr>
 
-        </table>
+    <h2 style="text-align:center; margin-top:20px;">
+        Carte des signalements - Région PACA
+    </h2>
 
+
+    <div class="map-container">
+        <div id="map"></div>
     </div>
-        <h2>Vos transactions et comptes en un clic !</h2>
 
-    <p th:if="${user == null}">Connectez-vous ou inscrivez-vous pour gérer vos transferts et comptes utilisateurs.</p>
 </main>
 
 <footer>
-    <p>&copy; 2026 FlashCash</p>
+    <p>© 2026 - Dashboard Environnement</p>
 </footer>
+
+<script th:inline="javascript">
+    window.onload = function () {
+
+        // ======================
+        // 📊 MONTH
+        // ======================
+        const monthData = /*[[${chartData}]]*/ [];
+
+        new Chart(document.getElementById('chartMonth'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],
+                datasets: [{
+                    label: 'Signalements par mois',
+                    data: monthData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { font: { size: 14 } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
+            }
+        });
+
+        // ======================
+        // 📈 DAY
+        // ======================
+        const dayData = /*[[${chartDay}]]*/ {labels:[],data:[]};
+
+        new Chart(document.getElementById('chartDay'), {
+            type: 'line',
+            data: {
+                labels: dayData.labels,
+                datasets: [{
+                    label: 'Signalements par jour',
+                    data: dayData.data,
+                    borderColor: '#4bc0c0',
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    tension: 0.3,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // ======================
+        // 📉 YEAR
+        // ======================
+        const yearData = /*[[${chartYearData}]]*/ {months:[],gravity:[]};
+
+        const monthNames = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
+
+        const severityMap = {
+            BASIC: 1,
+            MEDIUM: 2,
+            HIGH: 3,
+            CRITICAL: 4
+        };
+
+        const labels = (yearData.months || []).map(m => monthNames[m - 1]);
+        const data = (yearData.gravity || []).map(g => severityMap[g]);
+
+        new Chart(document.getElementById('chartYear'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Gravité des signalements',
+                    data: data,
+                    borderColor: 'red',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+
+    };
+</script>
+<script th:inline="javascript">
+
+
+    var reports = [[${reports} ?: '[]']];
+
+
+    var map = L.map('map').setView([43.9352, 6.0679], 8); // PACA
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+
+    var examplePoints = [
+        // 🟦 AIX-EN-PROVENCE
+        { title:"Cours Mirabeau", description:"Avenue emblématique", location:"Aix-en-Provence", latitude:43.5297, longitude:5.4474 },
+        { title:"Place de l'Hôtel de Ville", description:"Centre historique", location:"Aix-en-Provence", latitude:43.5293, longitude:5.4455 },
+        { title:"Rue Espariat", description:"Rue commerçante", location:"Aix-en-Provence", latitude:43.5290, longitude:5.4448 },
+        { title:"Rotonde", description:"Rond-point central", location:"Aix-en-Provence", latitude:43.5217, longitude:5.4459 },
+
+        // 🟦 MARSEILLE
+        { title:"Rue de la République", description:"Grande artère", location:"Marseille", latitude:43.2999, longitude:5.3729 },
+        { title:"Canebière", description:"Avenue célèbre", location:"Marseille", latitude:43.2965, longitude:5.3740 },
+
+        // 🟨 NICE
+        { title:"Avenue Jean Médecin", description:"Rue principale", location:"Nice", latitude:43.7034, longitude:7.2663 },
+        { title:"Promenade des Anglais", description:"Bord de mer", location:"Nice", latitude:43.6952, longitude:7.2580 },
+
+        // 🟪 CANNES
+        { title:"Boulevard de la Croisette", description:"Luxe et mer", location:"Cannes", latitude:43.5493, longitude:7.0264 }
+    ];
+
+
+    reports.forEach(function(r) {
+        if (r.latitude != null && r.longitude != null) {
+
+            L.marker([r.latitude, r.longitude])
+                .addTo(map)
+                .bindPopup(
+                    "<b>" + r.title + "</b><br>" +
+                    r.description + "<br>" +
+                    r.location
+                );
+        }
+    });
+
+    examplePoints.forEach(function(p) {
+
+        L.marker([p.latitude, p.longitude])
+            .addTo(map)
+            .bindPopup(
+                "<b>" + p.title + "</b><br>" +
+                p.description + "<br>" +
+                p.location
+            );
+    });
+
+</script>
+
 </body>
 </html>

@@ -1,360 +1,214 @@
-/* Reset minimal */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* =========================
+   GLOBAL
+========================= */
 
-/* Body */
 body {
-    background: linear-gradient(120deg, #e0f7fa, #ffffff);
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
     color: #333;
-    line-height: 1.6;
-    min-height: 100vh;
 }
 
-/* Header */
+/* =========================
+   HEADER
+========================= */
+
 header {
-    background-color: #00796b;
+    background: #1e2a38;
     color: white;
-    padding: 25px 0;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
-    margin-bottom: 10px;
-    font-size: 28px;
-    letter-spacing: 1px;
+    margin: 0;
+    font-size: 20px;
 }
 
-header nav a {
+nav a {
     color: white;
-    margin: 0 12px;
+    margin-left: 15px;
     text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
+    font-weight: bold;
 }
 
-header nav a:hover {
+nav a:hover {
     text-decoration: underline;
-    color: #b2dfdb;
 }
 
-/* Main content */
+/* =========================
+   MAIN
+========================= */
+
 main {
-    max-width: 450px;
+    max-width: 1000px;
     margin: 40px auto;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 20px;
 }
 
-/* Form styles */
-form div {
-    margin-bottom: 20px;
-    position: relative;
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: #00796b;
-}
+/* =========================
+   CHART CARDS
+========================= */
 
-form input {
+.chart-container {
     width: 100%;
-    padding: 10px 12px;
+    height: 380px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   FORM
+========================= */
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    outline: none;
-    transition: 0.3s;
 }
 
-form input:focus {
-    border-color: #00796b;
-    box-shadow: 0 0 8px rgba(0,121,107,0.3);
+input:focus {
+    border-color: #1e2a38;
 }
 
-/* Icons inside input */
-form input[type="email"]::placeholder,
-form input[type="password"]::placeholder,
-form input[type="text"]::placeholder {
-    color: #aaa;
-}
+/* =========================
+   BUTTON
+========================= */
 
-/* Buttons */
-form button {
+button {
     width: 100%;
     padding: 12px;
-    background-color: #00796b;
-    border: none;
+    background: #1e2a38;
     color: white;
-    font-size: 16px;
-    font-weight: 600;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.3s;
+    font-weight: bold;
 }
 
-form button:hover {
-    background-color: #004d40;
+button:hover {
+    background: #2f425a;
 }
 
-/* Footer */
+/* =========================
+   FOOTER
+========================= */
+
 footer {
     text-align: center;
-    margin: 40px 0 10px 0;
-    color: #555;
-    font-size: 14px;
+    padding: 15px;
+    margin-top: 40px;
+    background: #1e2a38;
+    color: white;
 }
 
-/* Headings */
-h2 {
-    margin-bottom: 18px;
-    color: #00796b;
-    text-align: center;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
-/* Responsive */
 @media (max-width: 600px) {
-    main {
-        margin: 20px;
-        padding: 20px;
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    .chart-container {
+        height: 300px;
+    }
+
+    form {
+        width: 90%;
     }
 }
 
 
 
-/* Conteneur du profil */
-.profile-container {
-    border: 2px solid #3498db; /* bleu clair */
-    border-radius: 10px;
+
+
+
+
+
+
+
+
+
+
+
+.map-container {
+    max-width: 1200px;
+    margin: auto;
     padding: 20px;
-    max-width: 400px;
+}
+
+
+/* 🗺️ Conteneur carte */
+#map {
+    height: 600px;
+    width: 100%;
+    border-radius: 12px;
     margin: 20px auto;
-    background-color: #f0f8ff; /* léger fond bleu */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
-/* Titres */
-.profile-title {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 28px;
-    margin-bottom: 15px;
-}
-
-.profile-subtitle {
-    text-align: left;
-    color: #2980b9;
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-/* Table */
-.profile-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.profile-th {
-    text-align: left;
-    padding: 10px;
-    background-color: #3498db;
-    color: white;
-    width: 40%;
-    border-radius: 5px 0 0 5px;
-}
-
-.profile-td {
-    padding: 10px;
-    background-color: #ecf0f1;
-    border-radius: 0 5px 5px 0;
-}
-.profile-table tr{
-
-    margin: 10px;
-
-}
-.profile-table {
-    border-collapse: separate; /* permet border-spacing */
-    border-spacing: 0 10px;   /* horizontal 0, vertical 10px */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 40px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 28px;
-}
-
-header nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: 500;
-}
-
-header nav a:hover {
-    text-decoration: underline;
-}
-
-main {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
+/* 📦 Popup Leaflet personnalisé */
+.leaflet-popup-content-wrapper {
     border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    padding: 8px;
 }
 
-h2 {
-    color: #4CAF50;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Profil utilisateur */
-.user-profile {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 40px;
-}
-
-.user-profile th,
-.user-profile td {
-    text-align: left;
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.user-profile th {
-    background-color: #f4f7f9;
-    color: #555;
-    font-weight: 600;
-}
-
-.user-profile td {
-    font-weight: 500;
-}
-
-/* Tableau des transactions */
-.transaction-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.transaction-table thead {
-    background-color: #f4f7f9;
-}
-
-.transaction-table th,
-.transaction-table td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-.transaction-table th {
-    color: #555;
-    font-weight: 600;
-}
-
-.transaction-table tr:hover {
-    background-color: #e8f5e9;
-}
-
-/* Formulaire de transfert */
-form {
-    max-width: 500px;
-    margin: 0 auto 40px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.05);
-}
-
-form div {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-form label {
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
-}
-
-form input[type="email"],
-form input[type="number"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-form button {
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    font-weight: 600;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s;
-}
-
-form button:hover {
-    background-color: #45a049;
-}
-
-/* Message d’erreur */
-.error-message {
-    text-align: center;
-    color: #d32f2f;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-footer {
-    background-color: #f4f7f9;
-    text-align: center;
-    padding: 15px;
-    margin-top: 40px;
+.leaflet-popup-content {
     font-size: 14px;
-    color: #555;
+    line-height: 1.4;
+}
+
+/* 🏷️ Titre dans popup */
+.leaflet-popup-content b {
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+/* 📍 Marqueurs (option animation légère) */
+.leaflet-marker-icon {
+    transition: transform 0.2s ease;
+}
+
+.leaflet-marker-icon:hover {
+    transform: scale(1.2);
 }
 
 
@@ -369,23 +223,95 @@ footer {
 
 
 
-.transfer-entry {
-    margin-top: 20px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* PAGE LAYOUT */
+.page-wrapper {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+/* FORM */
+.form-container {
+    width: 320px;
+    background: #1e1e2f;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.form-container h3 {
+    margin-bottom: 15px;
     text-align: center;
 }
 
-.transfer-button {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #4CAF50;
+.form-container input,
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #2c2c3e;
     color: white;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: background-color 0.3s, transform 0.2s;
 }
 
-.transfer-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
+.form-container textarea {
+    resize: none;
+    height: 80px;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-container button:hover {
+    background: #3730a3;
+}
+
+/* MAP */
+.map-container {
+    flex: 1;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }

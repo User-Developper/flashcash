@@ -1,6 +1,5 @@
 package org.example.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,57 +10,44 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
-
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests((requests ) -> requests
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(
+                                "/",
+                                "/signin",
+                                "/signup",
+                                "/logout",
+                                "/report",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
 
-                                .requestMatchers("/index.css", "/images/**", "/signin", "/signup", "/","/css/**")
-                                .permitAll()
-                                .anyRequest().authenticated()
-
-                        )
-
-                .formLogin((form) -> form
-
+                .formLogin(form -> form
                         .loginPage("/signin")
-                        .permitAll().usernameParameter("email").defaultSuccessUrl("/", true)
+                        .usernameParameter("email")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
+                )
 
-                );
-
-//                http.logout(( logout ) ->
-//
-//                        logout.permitAll());
-
-//        http.logout()
-//                .logoutUrl("/logout")        // URL déclenchant la déconnexion
-//                .logoutSuccessUrl("/signin") // page après déconnexion
-//                .invalidateHttpSession(true) // détruit la session
-//                .deleteCookies("JSESSIONID"); // supprime le cookie
-
-        http.logout(logout ->
-                logout
+                .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/signin")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
-        );
+                );
 
         return http.build();
-
-
-
     }
 }
